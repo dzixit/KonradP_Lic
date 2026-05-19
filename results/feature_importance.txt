@@ -1,0 +1,43 @@
+TOP SŁÓW DLA KLASY POZYTYWNEJ (wagi dodatnie):
+najlepsza                   +40.8138
+świetna                     +35.1673
+lepszej                     +23.3207
+ostatniej                   +22.3509
+dobre                       +21.7997
+wciąga                      +21.2991
+każdemu                     +20.0628
+piękna                      +18.4046
+zajebiste                   +17.4791
+genialna                    +17.1455
+bardzo                      +16.8752
+także                       +16.4525
+warto                       +16.4524
+jaką                        +15.7174
+super                       +15.6829
+arcydzieło                  +15.4804
+kocham                      +15.4632
+gb                          +15.2389
+trochę                      +15.2301
+byc                         +15.0442
+
+TOP SŁÓW DLA KLASY NEGATYWNEJ (wagi ujemne):
+niegrywalna                 -23.5434
+zapis                       -23.4931
+rozumiem                    -21.1208
+aktualizacje                -20.9094
+fallout                     -20.7724
+oddać                       -20.6211
+treść                       -20.4476
+aktualizacja                -20.2276
+błędów                      -19.9673
+zapisy                      -19.7930
+żart                        -18.0283
+rozczarowanie               -17.9038
+save                        -17.7416
+firma                       -17.5955
+leży                        -17.4180
+gothica                     -17.1481
+nudne                       -17.1289
+nudna                       -16.9354
+słabo                       -16.6981
+graczy                      -16.2794
