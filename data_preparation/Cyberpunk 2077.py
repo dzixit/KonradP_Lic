@@ -22,7 +22,7 @@ for lang in jezyki_do_pobrania:
     if 'reviews' in review_dict:
         wszystkie_recenzje.update(review_dict['reviews'])
 
-print(f"\nZebrano lacznie {len(wszystkie_recenzje)} recenzji (Angielskie + Polskie).")
+print(f"\nZebrano lacznie {len(wszystkie_recenzje)} recenzji ( Polskie).")
 print("Przetwarzanie danych i generowanie pliku Excel...")
 
 # Przygotowujemy liste, do ktorej trafia przetworzone dane
@@ -67,7 +67,7 @@ for review_id, review_data in wszystkie_recenzje.items():
 df = pd.DataFrame(data_for_excel)
 
 # Zapisujemy do pliku Excel
-file_name = "data/recenzje_steam_analiza.xlsx"
+file_name = "../data/recenzje_steam_analiza6.xlsx"
 df.to_excel(file_name, index=False)
 
 print(f"Sukces! Zapisano plik: {file_name}")

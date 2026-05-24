@@ -8,6 +8,7 @@ import pandas as pd
 import numpy as np
 import re
 import os
+import sys
 import matplotlib.pyplot as plt
 import seaborn as sns
 from wordcloud import WordCloud
@@ -19,9 +20,27 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from scipy.sparse import hstack
 from langdetect import detect, DetectorFactory
 from langdetect.lang_detect_exception import LangDetectException
+from sklearn.preprocessing import StandardScaler
 
 # Wymuszamy stały seed, aby wyniki wykrywania języka były zawsze identyczne
 DetectorFactory.seed = 42
+
+# =============================================================================
+# 0. KLASA DO ZAPISU LOGÓW (DODANO)
+# =============================================================================
+class Logger:
+    def __init__(self, filename="log.txt"):
+        self.terminal = sys.stdout
+        # Zapisujemy w trybie "w" (nadpisze plik przy każdym uruchomieniu) z polskimi znakami
+        self.log = open(filename, "w", encoding="utf-8")
+
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)
+
+    def flush(self):
+        self.terminal.flush()
+        self.log.flush()
 
 # =============================================================================
 # 1. WCZYTYWANIE I PREPROCESSING DANYCH
@@ -43,6 +62,31 @@ def load_and_preprocess_data(data_dir):
 
     df = pd.concat(df_list, ignore_index=True)
     print(f"\nSukces! Połączono {len(file_list)} plików. Łączna liczba recenzji surowych: {len(df)}")
+
+
+    # ---------------------------------------------------------
+    # CENZUROWANIE WULGARYZMÓW (Maskowanie)
+    # ---------------------------------------------------------
+    def censor_profanity(text):
+        if not isinstance(text, str): return ""
+
+        # Lista rdzeni najpopularniejszych wulgaryzmów
+        bad_words_patterns = [
+            r'\b\w*kurw\w*\b',
+            r'\b\w*jeb\w*\b',
+            r'\b\w*pierdol\w*\b',
+            r'\b\w*chuj\w*\b',
+            r'\b\w*huj\w*\b',
+            r'\b\w*pizd\w*\b',
+            r'\b\w*zjeb\w*\b'
+        ]
+
+        for pattern in bad_words_patterns:
+            # Zamienia dopasowane słowo na jego pierwszą literę + gwiazdki, np. chujowo -> c******
+            text = re.sub(pattern, lambda m: m.group(0)[0] + '*' * (len(m.group(0)) - 1), text, flags=re.IGNORECASE)
+        return text
+
+    df['Tresc Recenzji'] = df['Tresc Recenzji'].apply(censor_profanity)
 
     # ---------------------------------------------------------
     # WYKRYWANIE TROLLI / SARKAZMU (Ratio)
@@ -183,7 +227,7 @@ def perform_eda(df, output_folder='../Wykresy/results'):
 # =============================================================================
 
 def train_and_evaluate(X_train, X_test, y_train, y_test, vectorizer_name, feature_matrix_train, feature_matrix_test, output_folder):
-    model = LogisticRegression(penalty=None, solver='lbfgs', max_iter=2000, random_state=42)
+    model = LogisticRegression(C=np.inf, solver='lbfgs', max_iter=2000, random_state=42)
     model.fit(feature_matrix_train, y_train)
     y_pred = model.predict(feature_matrix_test)
 
@@ -257,6 +301,13 @@ def analyze_errors_and_features(model, vectorizer, y_test, y_pred, df_test, outp
 
 def main():
     current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # --- DODANO: Przechwytywanie wyjścia do pliku log.txt ---
+    log_file_path = os.path.join(current_dir, "log.txt")
+    sys.stdout = Logger(log_file_path)
+    print(f"Logi z tej sesji zostaną zapisane do pliku: {log_file_path}\n")
+    # --------------------------------------------------------
+
     data_dir = os.path.join(current_dir, "data")
     results_dir = os.path.join(current_dir, "results")
     os.makedirs(results_dir, exist_ok=True)
@@ -301,8 +352,12 @@ def main():
     train_features = df_train[['Word_Count', 'Char_Count', 'Exclamation_Count', 'Capslock_Count', 'Negation_Count']].values
     test_features = df_test[['Word_Count', 'Char_Count', 'Exclamation_Count', 'Capslock_Count', 'Negation_Count']].values
 
-    X_train_combined = hstack([X_train_tfidf, train_features])
-    X_test_combined = hstack([X_test_tfidf, test_features])
+    scaler = StandardScaler()
+    train_features_scaled = scaler.fit_transform(train_features)
+    test_features_scaled = scaler.transform(test_features)
+
+    X_train_combined = hstack([X_train_tfidf, train_features_scaled])
+    X_test_combined = hstack([X_test_tfidf, test_features_scaled])
 
     train_and_evaluate(X_train, X_test, y_train, y_test, "TF_IDF_Plus_Features", X_train_combined, X_test_combined, results_dir)
 

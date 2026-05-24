@@ -1,0 +1,107 @@
+Logi z tej sesji zostaną zapisane do pliku: C:\Users\Administrator\PycharmProjects\Kod_Licencjat\log.txt
+
+Szukanie plików z danymi w folderze: C:\Users\Administrator\PycharmProjects\Kod_Licencjat\data...
+
+Sukces! Połączono 7 plików. Łączna liczba recenzji surowych: 111252
+
+Brak kolumn 'votes_up' i 'votes_funny' - pomijam liczenie Ratio.
+
+Trwa detekcja języka (może to zająć chwilę przy dużym zbiorze)...
+Ostateczna liczba recenzji do modelowania (N): 59117
+
+[Rozkład klas]
+Zbiór danych składa się z N=59117 recenzji, z czego:
+ - POZYTYWNE: 56770 (96.0% całości)
+ - NEGATYWNE: 2347 (4.0% całości)
+
+[Długość recenzji]
+ - Średnia długość recenzji POZYTYWNEJ (AAA): 182 znaków
+ - Średnia długość recenzji NEGATYWNEJ (BBB): 411 znaków
+ - Mediana długości pozytywnej (CCC): 47 znaków
+ - Mediana długości negatywnej (DDD): 122 znaków
+
+[Podział na zbiory]
+Zbiór treningowy (XXXX): 47293 recenzji
+Zbiór testowy (YYYY): 11824 recenzji
+
+==================================================
+ WYNIKI MODELU: Bag_of_Words
+==================================================
+
+[ Tabela dla Bag_of_Words]
+              precision    recall  f1-score   support
+
+   Negatywna     0.4224    0.4414    0.4317       469
+   Pozytywna     0.9769    0.9751    0.9760     11355
+
+    accuracy                         0.9539     11824
+   macro avg     0.6997    0.7082    0.7038     11824
+weighted avg     0.9549    0.9539    0.9544     11824
+
+
+==================================================
+ WYNIKI MODELU: TF_IDF
+==================================================
+
+[ Tabela dla TF_IDF]
+              precision    recall  f1-score   support
+
+   Negatywna     0.5152    0.3987    0.4495       469
+   Pozytywna     0.9754    0.9845    0.9799     11355
+
+    accuracy                         0.9613     11824
+   macro avg     0.7453    0.6916    0.7147     11824
+weighted avg     0.9571    0.9613    0.9589     11824
+
+
+[Wartości z macierzy pomyłek TF-IDF]
+ - True Negatives (TN): 187
+ - False Positives (FP): 282
+ - False Negatives (FN): 176
+ - True Positives (TP): 11179
+
+[TOP 10 POZYTYWNE]
+świetna         +23.56
+wciąga          +20.79
+arcydzieło      +20.74
+poboczne        +20.54
+każdemu         +19.07
+najlepszych     +18.68
+najlepsza       +18.63
+kozak           +17.46
+fantastyczna    +16.46
+ostatniej       +16.17
+
+[TOP 10 NEGATYWNE]
+nuda            -17.61
+rozczarowanie   -17.43
+zmienię         -16.47
+aktualizacją    -15.57
+negatywną       -15.54
+firma           -14.85
+porażka         -14.70
+praktyce        -14.63
+zawiedziony     -14.55
+najgorszy       -14.33
+
+Trwa przygotowywanie Modelu 3 (TF-IDF + Features)...
+
+==================================================
+ WYNIKI MODELU: TF_IDF_Plus_Features
+==================================================
+
+[ Tabela dla TF_IDF_Plus_Features]
+              precision    recall  f1-score   support
+
+   Negatywna     0.4413    0.4328    0.4370       469
+   Pozytywna     0.9766    0.9774    0.9770     11355
+
+    accuracy                         0.9558     11824
+   macro avg     0.7089    0.7051    0.7070     11824
+weighted avg     0.9554    0.9558    0.9556     11824
+
+
+======================================================================
+GOTOWE!
+======================================================================
+

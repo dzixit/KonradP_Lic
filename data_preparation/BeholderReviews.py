@@ -67,7 +67,7 @@ for review_id, review_data in wszystkie_recenzje.items():
 df = pd.DataFrame(data_for_excel)
 
 # Zapisujemy do pliku Excel
-file_name = "data/recenzje_steam_analiza.xlsx"
+file_name = "../data/recenzje_steam_analiza5.xlsx"
 df.to_excel(file_name, index=False)
 
 print(f"Sukces! Zapisano plik: {file_name}")
