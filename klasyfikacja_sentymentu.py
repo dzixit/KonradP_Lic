@@ -21,17 +21,17 @@ from scipy.sparse import hstack
 from langdetect import detect, DetectorFactory
 from langdetect.lang_detect_exception import LangDetectException
 from sklearn.preprocessing import StandardScaler
+import spacy
 
-# Wymuszamy stały seed, aby wyniki wykrywania języka były zawsze identyczne
+# Wymuszamy stały seed, aby wyniki wykrywania języka były zawsze powtarzalne
 DetectorFactory.seed = 42
 
 # =============================================================================
-# 0. KLASA DO ZAPISU LOGÓW (DODANO)
+# 0. KLASA DO ZAPISU LOGÓW (REJESTRACJA WYJŚCIA TERMINALA)
 # =============================================================================
 class Logger:
     def __init__(self, filename="log.txt"):
         self.terminal = sys.stdout
-        # Zapisujemy w trybie "w" (nadpisze plik przy każdym uruchomieniu) z polskimi znakami
         self.log = open(filename, "w", encoding="utf-8")
 
     def write(self, message):
@@ -63,14 +63,12 @@ def load_and_preprocess_data(data_dir):
     df = pd.concat(df_list, ignore_index=True)
     print(f"\nSukces! Połączono {len(file_list)} plików. Łączna liczba recenzji surowych: {len(df)}")
 
-
     # ---------------------------------------------------------
     # CENZUROWANIE WULGARYZMÓW (Maskowanie)
     # ---------------------------------------------------------
     def censor_profanity(text):
         if not isinstance(text, str): return ""
 
-        # Lista rdzeni najpopularniejszych wulgaryzmów
         bad_words_patterns = [
             r'\b\w*kurw\w*\b',
             r'\b\w*jeb\w*\b',
@@ -82,40 +80,48 @@ def load_and_preprocess_data(data_dir):
         ]
 
         for pattern in bad_words_patterns:
-            # Zamienia dopasowane słowo na jego pierwszą literę + gwiazdki, np. chujowo -> c******
             text = re.sub(pattern, lambda m: m.group(0)[0] + '*' * (len(m.group(0)) - 1), text, flags=re.IGNORECASE)
         return text
 
     df['Tresc Recenzji'] = df['Tresc Recenzji'].apply(censor_profanity)
 
     # ---------------------------------------------------------
-    # WYKRYWANIE TROLLI / SARKAZMU (Ratio)
+    # WYKRYWANIE TROLLI / SARKAZMU (Obliczenie wskaźnika Ratio)
     # ---------------------------------------------------------
-    if 'votes_up' in df.columns and 'votes_funny' in df.columns:
+
+    if 'Glosy Helpful' in df.columns and 'Glosy Funny' in df.columns:
         def calc_ratio(row):
-            up = row['votes_up']
-            funny = row['votes_funny']
+            up = row['Glosy Helpful']
+            funny = row['Glosy Funny']
+
+            # Jeśli brakuje danych, zakładamy 0 (Standardowa recenzja)
             if pd.isna(up) or pd.isna(funny): return 0.0
-            if up > 0: return funny / up
-            elif up == 0 and funny > 0: return 1.0
-            else: return 0.0
+
+            # Właściwe liczenie ratio
+            if up > 0:
+                return funny / up
+            elif up == 0 and funny > 0:
+                return 1.0
+            else:
+                return 0.0  # Jeśli obie wartości to 0, ratio wynosi 0.0
 
         df['Ratio'] = df.apply(calc_ratio, axis=1)
         troll = len(df[df['Ratio'] > 0.7])
         zabawna = len(df[(df['Ratio'] > 0.5) & (df['Ratio'] <= 0.7)])
         normalna = len(df[df['Ratio'] <= 0.5])
 
-        print("\n[ Kategoryzacja głosów ]")
-        print(f" - Ratio > 0.7 (TROLL / CZYSTY SARKAZM): {troll}")
-        print(f" - 0.5 < Ratio <= 0.7 (ZABAWNA ALE PRZYDATNA): {zabawna}")
-        print(f" - Ratio <= 0.5 (NORMALNA): {normalna}")
+        print("\n[ Kategoryzacja głosów społeczności Steam ]")
+        print(f" - Ratio > 0.7 (Silny sarkazm / Trollowanie): {troll}")
+        print(f" - 0.5 < Ratio <= 0.7 (Recenzja zabawna): {zabawna}")
+        print(f" - Ratio <= 0.5 (Standardowa recenzja): {normalna}")
     else:
-        print("\nBrak kolumn 'votes_up' i 'votes_funny' - pomijam liczenie Ratio.")
+        print("\nBrak kolumn 'Glosy Helpful' i 'Glosy Funny' - pomijam obliczenia statystyk społecznościowych (Ratio).")
+        df['Ratio'] = 0.0 # Zabezpieczenie na wypadek braku kolumny w Modelu 3
 
     # ---------------------------------------------------------
     # FILTROWANIE JĘZYKA POLSKIEGO
     # ---------------------------------------------------------
-    print("\nTrwa detekcja języka (może to zająć chwilę przy dużym zbiorze)...")
+    print("\nTrwa detekcja języka (proces zoptymalizowany, może zająć chwilę)...")
     def is_polish(text):
         if not isinstance(text, str) or len(text.strip()) < 3: return False
         try: return detect(text) == 'pl'
@@ -126,20 +132,39 @@ def load_and_preprocess_data(data_dir):
     df.drop('Is_Polish', axis=1, inplace=True)
 
     # ---------------------------------------------------------
-    # STANDARDOWE CZYSZCZENIE NLP
+    # ZAAWANSOWANE CZYSZCZENIE NLP I LEMATYZACJA (spaCy)
     # ---------------------------------------------------------
-    def clean_text(text):
-        if not isinstance(text, str): return ""
-        text = text.lower()
-        text = re.sub(r'[^\w\s]', '', text)
-        text = re.sub(r'\d+', '', text)
-        return text
+    print("\nŁadowanie polskiego modelu NLP (spaCy)...")
+    try:
+        # Ładujemy polski słownik morfologiczny
+        nlp = spacy.load("pl_core_news_md")
+    except OSError:
+        print("\nBŁĄD: Nie znaleziono modelu językowego!")
+        print("Zatrzymaj skrypt i uruchom w terminalu komendę:")
+        print("python -m spacy download pl_core_news_md\n")
+        sys.exit(1)
 
-    df['Cleaned_Review'] = df['Tresc Recenzji'].apply(clean_text)
+    print("Trwa hurtowa lematyzacja tekstu (to potrwa kilka minut przy tak dużym zbiorze)...")
+
+    def fast_lemmatize(texts):
+        cleaned_texts = []
+        # Używamy nlp.pipe dla maksymalnej wydajności i wyłączamy zbędne moduły (ner, parser)
+        for doc in nlp.pipe(texts, disable=['ner', 'parser']):
+            # Wyciągamy lematy, odrzucamy interpunkcję, spacje i liczby, po czym zamieniamy na małe litery
+            lemmas = [
+                token.lemma_.lower()
+                for token in doc
+                if not token.is_punct and not token.is_space and not token.like_num
+            ]
+            cleaned_texts.append(" ".join(lemmas))
+        return cleaned_texts
+
+    # Rzutujemy kolumnę na stringi i przekazujemy całą listę do szybkiej lematyzacji
+    df['Cleaned_Review'] = fast_lemmatize(df['Tresc Recenzji'].astype(str).tolist())
+
     df['Label'] = df['Ocena'].map({'Pozytywna': 1, 'Negatywna': 0})
     df = df.dropna(subset=['Cleaned_Review', 'Label'])
     df = df[df['Cleaned_Review'].str.strip().astype(bool)]
-
 
     print(f"Ostateczna liczba recenzji do modelowania (N): {len(df)}")
 
@@ -180,12 +205,12 @@ def perform_eda(df, output_folder='../Wykresy/results'):
     positive = df['Label'].sum()
     negative = total - positive
 
-    print("\n[Rozkład klas]")
+    print("\n[ Rozkład klas ]")
     print(f"Zbiór danych składa się z N={total} recenzji, z czego:")
     print(f" - POZYTYWNE: {positive} ({positive/total*100:.1f}% całości)")
     print(f" - NEGATYWNE: {negative} ({negative/total*100:.1f}% całości)")
 
-    # Wykres klas
+    # Wykres rozkładu klas
     plt.figure(figsize=(8, 6))
     counts = df['Label'].value_counts().sort_index()
     bars = plt.bar([0, 1], counts.values, color=['#FF6B6B', '#4ECDC4'], edgecolor='black', linewidth=1.5)
@@ -196,16 +221,17 @@ def perform_eda(df, output_folder='../Wykresy/results'):
     plt.savefig(f'{output_folder}/class_distribution.png', dpi=300)
     plt.close()
 
-    # Długość recenzji
+    # Statystyki długości recenzji
     neg_lengths = df[df['Label'] == 0]['Char_Count']
     pos_lengths = df[df['Label'] == 1]['Char_Count']
 
-    print("\n[Długość recenzji]")
-    print(f" - Średnia długość recenzji POZYTYWNEJ (AAA): {pos_lengths.mean():.0f} znaków")
-    print(f" - Średnia długość recenzji NEGATYWNEJ (BBB): {neg_lengths.mean():.0f} znaków")
-    print(f" - Mediana długości pozytywnej (CCC): {pos_lengths.median():.0f} znaków")
-    print(f" - Mediana długości negatywnej (DDD): {neg_lengths.median():.0f} znaków")
+    print("\n[ Długość recenzji ]")
+    print(f" - Średnia długość recenzji POZYTYWNEJ: {pos_lengths.mean():.0f} znaków")
+    print(f" - Średnia długość recenzji NEGATYWNEJ: {neg_lengths.mean():.0f} znaków")
+    print(f" - Mediana długości pozytywnej: {pos_lengths.median():.0f} znaków")
+    print(f" - Mediana długości negatywnej: {neg_lengths.median():.0f} znaków")
 
+    # Histogram długości recenzji
     plt.figure(figsize=(10, 6))
     plt.hist(neg_lengths, bins=50, alpha=0.6, label='Negatywna', color='#FF6B6B')
     plt.hist(pos_lengths, bins=50, alpha=0.6, label='Pozytywna', color='#4ECDC4')
@@ -215,7 +241,7 @@ def perform_eda(df, output_folder='../Wykresy/results'):
     plt.savefig(f'{output_folder}/review_length_distribution.png', dpi=300)
     plt.close()
 
-    # WordCloud
+    # Generowanie WordCloud
     wc_pos = WordCloud(width=1200, height=600, background_color='white', colormap='Greens', max_words=100).generate(' '.join(df[df['Label'] == 1]['Cleaned_Review'].astype(str)))
     plt.figure(figsize=(15, 8)); plt.imshow(wc_pos, interpolation='bilinear'); plt.axis('off'); plt.savefig(f'{output_folder}/wordcloud_positive.png', dpi=300); plt.close()
 
@@ -227,28 +253,28 @@ def perform_eda(df, output_folder='../Wykresy/results'):
 # =============================================================================
 
 def train_and_evaluate(X_train, X_test, y_train, y_test, vectorizer_name, feature_matrix_train, feature_matrix_test, output_folder):
-    model = LogisticRegression(C=np.inf, solver='lbfgs', max_iter=2000, random_state=42)
+    model = LogisticRegression(class_weight='balanced', C=np.inf, solver='lbfgs', max_iter=2000, random_state=42)
     model.fit(feature_matrix_train, y_train)
     y_pred = model.predict(feature_matrix_test)
 
     print(f"\n==================================================")
     print(f" WYNIKI MODELU: {vectorizer_name}")
     print(f"==================================================")
-    print(f"\n[ Tabela dla {vectorizer_name}]")
+    print(f"\n[ Raport z Klasyfikacji - {vectorizer_name} ]")
     print(classification_report(y_test, y_pred, target_names=['Negatywna', 'Pozytywna'], digits=4))
 
-    # Macierz pomyłek
+    # Wyliczanie komórek Macierzy Pomyłek
     cm = confusion_matrix(y_test, y_pred)
     tn, fp, fn, tp = cm.ravel()
 
     if vectorizer_name == "TF_IDF":
-        print("\n[Wartości z macierzy pomyłek TF-IDF]")
+        print("\n[ Wartości z macierzy pomyłek (TF-IDF) ]")
         print(f" - True Negatives (TN): {tn}")
         print(f" - False Positives (FP): {fp}")
         print(f" - False Negatives (FN): {fn}")
         print(f" - True Positives (TP): {tp}")
 
-    # Rysowanie heatmapy
+    # Rysowanie heatmapy (Confusion Matrix)
     plt.figure(figsize=(8, 6))
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', cbar=True, square=True, linewidths=2, linecolor='black', annot_kws={'size': 16})
     plt.xlabel('Predykcja modelu')
@@ -265,11 +291,12 @@ def train_and_evaluate(X_train, X_test, y_train, y_test, vectorizer_name, featur
 # =============================================================================
 
 def analyze_errors_and_features(model, vectorizer, y_test, y_pred, df_test, output_folder):
-    # Analiza błędów
+    # Identyfikacja błędów klasyfikacyjnych
     y_test_arr = y_test.values
     fp_mask = (y_test_arr == 0) & (y_pred == 1)
     fn_mask = (y_test_arr == 1) & (y_pred == 0)
 
+    # Zapis błędów do zewnętrznego pliku tekstowego
     with open(f'{output_folder}/error_analysis.txt', 'w', encoding='utf-8') as f:
         f.write("FALSE POSITIVES (FP)\n")
         for idx, (_, row) in enumerate(df_test[fp_mask].head(15).iterrows(), 1):
@@ -278,61 +305,59 @@ def analyze_errors_and_features(model, vectorizer, y_test, y_pred, df_test, outp
         for idx, (_, row) in enumerate(df_test[fn_mask].head(15).iterrows(), 1):
             f.write(f"\n[FN #{idx}]\n{row['Tresc Recenzji']}\n")
 
-    # Analiza wagi cech (Feature Importance) - działa dla BoW i TF-IDF
+    # Analiza wag algorytmu Regresji Logistycznej
     if hasattr(vectorizer, 'get_feature_names_out'):
         feature_names = vectorizer.get_feature_names_out()
         coefficients = model.coef_[0]
-        # Bierzemy słowa (bez naszych dodanych liczbowych cech w przypadku 3 modelu)
         n_vocab = len(feature_names)
         coef_vocab = coefficients[:n_vocab]
 
         top_pos_idx = coef_vocab.argsort()[-10:][::-1]
         top_neg_idx = coef_vocab.argsort()[:10]
 
-        print("\n[TOP 10 POZYTYWNE]")
+        print("\n[ TOP 10 SŁÓW - POZYTYWNE WAGI ]")
         for i in top_pos_idx: print(f"{feature_names[i]:<15} {coef_vocab[i]:>+6.2f}")
 
-        print("\n[TOP 10 NEGATYWNE]")
+        print("\n[ TOP 10 SŁÓW - NEGATYWNE WAGI ]")
         for i in top_neg_idx: print(f"{feature_names[i]:<15} {coef_vocab[i]:>+6.2f}")
 
 # =============================================================================
-# 6. GŁÓWNA FUNKCJA MAIN
+# 6. FUNKCJA STERUJĄCA MAIN
 # =============================================================================
 
 def main():
     current_dir = os.path.dirname(os.path.abspath(__file__))
 
-    # --- DODANO: Przechwytywanie wyjścia do pliku log.txt ---
+    # Inicjalizacja przekierowania wyjścia z konsoli do pliku tekstowego
     log_file_path = os.path.join(current_dir, "log.txt")
     sys.stdout = Logger(log_file_path)
     print(f"Logi z tej sesji zostaną zapisane do pliku: {log_file_path}\n")
-    # --------------------------------------------------------
 
     data_dir = os.path.join(current_dir, "data")
     results_dir = os.path.join(current_dir, "results")
     os.makedirs(results_dir, exist_ok=True)
 
-    # 1. Wczytanie
+    # 1. Agregacja i normalizacja tekstowa
     df = load_and_preprocess_data(data_dir)
 
-    # 2. Inżynieria Cech
+    # 2. Tworzenie autorskich struktur zmiennych
     df = feature_engineering(df)
 
-    # 3. EDA
+    # 3. Analiza eksploracyjna danych obrazowych
     perform_eda(df, output_folder=results_dir)
 
-    # 4. Podział Train/Test
+    # 4. Stratyfikowany podział przestrzeni badawczej
     X_train, X_test, y_train, y_test = train_test_split(
         df['Cleaned_Review'], df['Label'], test_size=0.2, stratify=df['Label'], random_state=42
     )
     df_train = df.loc[X_train.index]
     df_test = df.loc[X_test.index]
 
-    print(f"\n[Podział na zbiory]")
-    print(f"Zbiór treningowy (XXXX): {len(X_train)} recenzji")
-    print(f"Zbiór testowy (YYYY): {len(X_test)} recenzji")
+    print(f"\n[ Rozmiar podziału zbiorów ]")
+    print(f"Zbiór treningowy: {len(X_train)} obserwacji")
+    print(f"Zbiór testowy: {len(X_test)} obserwacji")
 
-    # ================= MODEL 1: BoW =================
+    # ================= MODEL 1: Bag-of-Words =================
     bow_vectorizer = CountVectorizer(stop_words=None, max_features=5000)
     X_train_bow = bow_vectorizer.fit_transform(X_train)
     X_test_bow = bow_vectorizer.transform(X_test)
@@ -344,25 +369,30 @@ def main():
     X_test_tfidf = tfidf_vectorizer.transform(X_test)
     model_tfidf, y_pred_tfidf = train_and_evaluate(X_train, X_test, y_train, y_test, "TF_IDF", X_train_tfidf, X_test_tfidf, results_dir)
 
-    # Zapis błędów i wagi słów dla TF-IDF (najlepszego bazowego)
+    # Wyodrębnianie interpretacji wag i zapis fizycznych wierszy błędów
     analyze_errors_and_features(model_tfidf, tfidf_vectorizer, y_test, y_pred_tfidf, df_test, results_dir)
 
     # ================= MODEL 3: TF-IDF + WŁASNE CECHY (HSTACK) =================
-    print("\nTrwa przygotowywanie Modelu 3 (TF-IDF + Features)...")
-    train_features = df_train[['Word_Count', 'Char_Count', 'Exclamation_Count', 'Capslock_Count', 'Negation_Count']].values
-    test_features = df_test[['Word_Count', 'Char_Count', 'Exclamation_Count', 'Capslock_Count', 'Negation_Count']].values
+    print("\nTrwa przygotowywanie środowiska dla Modelu 3 (TF-IDF + Standaryzowane Cechy Autorskie)...")
 
+    # Zdefiniowanie pełnej listy cech (z uwzględnieniem nowej kolumny Ratio)
+    feature_cols = ['Word_Count', 'Char_Count', 'Exclamation_Count', 'Capslock_Count', 'Negation_Count', 'Ratio']
+    train_features = df_train[feature_cols].values
+    test_features = df_test[feature_cols].values
+
+    # Zastosowanie skalowania metodą Z-score
     scaler = StandardScaler()
     train_features_scaled = scaler.fit_transform(train_features)
     test_features_scaled = scaler.transform(test_features)
 
+    # Łączenie macierzy rzadkich za pomocą implementacji SciPy
     X_train_combined = hstack([X_train_tfidf, train_features_scaled])
     X_test_combined = hstack([X_test_tfidf, test_features_scaled])
 
     train_and_evaluate(X_train, X_test, y_train, y_test, "TF_IDF_Plus_Features", X_train_combined, X_test_combined, results_dir)
 
     print("\n" + "="*70)
-    print("GOTOWE!")
+    print("PROCES APROKSYMACJI DANYCH ZAKOŃCZONY POMYŚLNIE.")
     print("="*70 + "\n")
 
 if __name__ == "__main__":
