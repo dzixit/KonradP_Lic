@@ -7814,7 +7814,7 @@ a.anchor-link {
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython2"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
@@ -7981,7 +7981,7 @@ Ostateczna liczba recenzji do modelowania (N): 59117
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython2"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">feature_engineering</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
@@ -8007,7 +8007,7 @@ Ostateczna liczba recenzji do modelowania (N): 59117
 </div>
 <div class="jp-OutputArea jp-Cell-outputArea">
 <div class="jp-OutputArea-child jp-OutputArea-executeResult">
-<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[5]:</div>
+<div class="jp-OutputPrompt jp-OutputArea-prompt">Out[4]:</div>
 <div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output jp-OutputArea-executeResult" data-mime-type="text/html" tabindex="0">
 <div>
 <style scoped="">
@@ -8126,7 +8126,7 @@ Ostateczna liczba recenzji do modelowania (N): 59117
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython2"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">perform_eda</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">):</span>
@@ -8172,7 +8172,7 @@ Ostateczna liczba recenzji do modelowania (N): 59117
 <div class="jp-OutputArea-child">
 <div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
 <div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
-<pre>C:\Users\barto\AppData\Local\Temp\ipykernel_8052\3361842611.py:9: FutureWarning: 
+<pre>C:\Users\barto\AppData\Local\Temp\ipykernel_13864\3361842611.py:9: FutureWarning: 
 
 Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
 
@@ -8203,6 +8203,76 @@ Passing `palette` without assigning `hue` is deprecated and will be removed in v
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h3 id="Wnioski-z-Analizy-Eksploracyjnej-(EDA)">Wnioski z Analizy Eksploracyjnej (EDA)<a class="anchor-link" href="#Wnioski-z-Analizy-Eksploracyjnej-(EDA)">¶</a></h3><p>Zbiór badawczy wykazuje drastyczne niezbalansowanie klas. Z 59 117 recenzji aż <strong>96.0% (56 770)</strong> stanowi klasę pozytywną, podczas gdy opinie negatywne to zaledwie <strong>4.0% (2 347)</strong>. Wymusza to na modelach zastosowanie rygorystycznego równoważenia wag klas (<code>class_weight='balanced'</code>).</p>
 <p>Analiza widocznych powyżej rozkładów wykazuje interesujące prawidłowości behawioralne. Użytkownicy niezadowoleni z produktu tworzą znacznie bardziej wyczerpujące recenzje – ich średnia długość to <strong>397 znaków</strong>. W przypadku recenzji pozytywnych średnia spada do zaledwie <strong>177 znaków</strong>. Zjawisko to potwierdza silną potrzebę merytorycznej argumentacji napotkanych usterek przez sfrustrowanych graczy.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=19694c37bf3719f4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [6]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython2"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="c1"># Wyodrębnienie tekstów dla obu klas</span>
+<span class="n">pos_reviews</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'Label'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">][</span><span class="s1">'Cleaned_Review'</span><span class="p">]</span>
+<span class="n">neg_reviews</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'Label'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">][</span><span class="s1">'Cleaned_Review'</span><span class="p">]</span>
+
+<span class="c1"># Funkcja zliczająca słowa</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_top_n_words</span><span class="p">(</span><span class="n">text_series</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">all_words</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">text_series</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">Counter</span><span class="p">(</span><span class="n">all_words</span><span class="p">)</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># Generowanie wyników</span>
+<span class="n">top_pos</span> <span class="o">=</span> <span class="n">get_top_n_words</span><span class="p">(</span><span class="n">pos_reviews</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">top_neg</span> <span class="o">=</span> <span class="n">get_top_n_words</span><span class="p">(</span><span class="n">neg_reviews</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"[ TOP 10 NAJCZĘSTSZYCH SŁÓW - RECENZJE POZYTYWNE ]"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">top_pos</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">word</span><span class="si">:</span><span class="s2">&lt;15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">&gt;7</span><span class="si">}</span><span class="s2"> wystąpień"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">[ TOP 10 NAJCZĘSTSZYCH SŁÓW - RECENZJE NEGATYWNE ]"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">top_neg</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">word</span><span class="si">:</span><span class="s2">&lt;15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">count</span><span class="si">:</span><span class="s2">&gt;7</span><span class="si">}</span><span class="s2"> wystąpień"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>[ TOP 10 NAJCZĘSTSZYCH SŁÓW - RECENZJE POZYTYWNE ]
+być               61099 wystąpień
+i                 44967 wystąpień
+w                 41046 wystąpień
+gra               34186 wystąpień
+na                31164 wystąpień
+z                 31071 wystąpień
+to                30260 wystąpień
+nie               29906 wystąpień
+się               28034 wystąpień
+grać              24731 wystąpień
+
+[ TOP 10 NAJCZĘSTSZYCH SŁÓW - RECENZJE NEGATYWNE ]
+być                5877 wystąpień
+nie                4616 wystąpień
+i                  4098 wystąpień
+w                  3903 wystąpień
+to                 3621 wystąpień
+na                 3226 wystąpień
+się                3143 wystąpień
+gra                2855 wystąpień
+z                  2597 wystąpień
+ten                1828 wystąpień
+</pre>
+</div>
 </div>
 </div>
 </div>
@@ -8511,7 +8581,7 @@ weighted avg     0.9559    0.9315    0.9416     11824
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [11]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [10]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-ipython2"><pre><span></span><span class="c1"># Analiza wag dla modelu TF-IDF</span>
@@ -8623,6 +8693,72 @@ Mimo zaawansowanej optymalizacji cech, model liniowy odbija się od zauważalneg
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=f1fed1df847befda">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [13]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython2"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">[ WERYFIKACJA WPŁYWU WSKAŹNIKA RATIO (TROLLOWANIE) ]"</span><span class="p">)</span>
+
+<span class="c1"># Wyciągamy zbiór testowy, w którym Ratio wskazuje na trollowanie (np. Ratio &gt; 0.7)</span>
+<span class="n">mask_troll</span> <span class="o">=</span> <span class="n">df_test</span><span class="p">[</span><span class="s1">'Ratio'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.7</span>
+
+<span class="n">y_test_troll</span> <span class="o">=</span> <span class="n">y_test</span><span class="p">[</span><span class="n">mask_troll</span><span class="p">]</span>
+<span class="n">y_pred_troll</span> <span class="o">=</span> <span class="n">y_pred_hybryda</span><span class="p">[</span><span class="n">mask_troll</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_test_troll</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">cm_troll</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test_troll</span><span class="p">,</span> <span class="n">y_pred_troll</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Liczba recenzji 'troll' w zbiorze testowym: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">y_test_troll</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Macierz pomyłek TYLKO dla tekstów z Ratio &gt; 0.7:"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"True Negatives (Poprawnie wykryta krytyka/troll): </span><span class="si">{</span><span class="n">cm_troll</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"False Positives (Przeoczenie - krytyka uznana za pochwałę): </span><span class="si">{</span><span class="n">cm_troll</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"False Negatives (Fałszywy alarm - pochwała uznana za krytykę): </span><span class="si">{</span><span class="n">cm_troll</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"True Positives (Poprawnie wykryta pochwała): </span><span class="si">{</span><span class="n">cm_troll</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Brak recenzji z Ratio &gt; 0.7 w zbiorze testowym."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>
+[ WERYFIKACJA WPŁYWU WSKAŹNIKA RATIO (TROLLOWANIE) ]
+Liczba recenzji 'troll' w zbiorze testowym: 718
+--------------------------------------------------
+Macierz pomyłek TYLKO dla tekstów z Ratio &gt; 0.7:
+True Negatives (Poprawnie wykryta krytyka/troll): 91
+False Positives (Przeoczenie - krytyka uznana za pochwałę): 32
+False Negatives (Fałszywy alarm - pochwała uznana za krytykę): 103
+True Positives (Poprawnie wykryta pochwała): 492
+--------------------------------------------------
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fee3336b9aae8e0e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<p>Wartość analityczna wdrożenia autorskiej inżynierii cech została dodatkowo potwierdzona poprzez przeprowadzenie analizy na wycinku danych (ang. slice analysis), obejmującym wyłącznie recenzje o wysokim natężeniu trollingu (wskaźnik Ratio &gt; 0.7). Na 718 takich, niezwykle trudnych w interpretacji obserwacji w zbiorze testowym, algorytm poprawnie zidentyfikował 91 ze 123 rzeczywistych opinii krytycznych i żartobliwych. Oznacza to, że dla tej specyficznej, hermetycznej grupy tekstów wskaźnik Czułości (Recall) modelu poszybował do poziomu 74%, drastycznie przewyższając średnią globalną algorytmu (ok. 60%). Wynik ten stanowi bezsporny dowód ekonometryczny na to, że wskaźnik społecznościowy z powodzeniem posłużył dyskryminatorowi jako numeryczny kontekst. Pozwolił on maszynie na skuteczne rozpoznanie skomplikowanej internetowej ironii, wobec której klasyczne modele oparte wyłącznie na zliczaniu słów pozostają całkowicie bezradne.</p>
 </div>
 </div>
 </div>

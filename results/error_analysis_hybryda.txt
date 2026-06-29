@@ -1,0 +1,193 @@
+=== TOP 10 SYGNAŁÓW POZYTYWNYCH (Model 3) ===
+świetna              +71.1025
+pomylić              +57.1664
+fantastyczny         +50.5925
+bliski               +50.4170
+jednocześnie         +47.9873
+oglądanie            +43.7617
+skóra                +42.2822
+doskonały            +42.1670
+potyczka             +42.0496
+side                 +41.6708
+
+=== TOP 10 SYGNAŁÓW NEGATYWNYCH (Model 3) ===
+zmarnowany           -60.1703
+praktyka             -54.7935
+potraktować          -49.3887
+żenada               -47.3051
+zniechęcić           -44.7920
+wciskać              -43.9257
+zwyczajnie           -41.4547
+zadziałać            -41.3794
+podkreślać           -40.3615
+zawód                -39.5252
+
+==================================================
+
+=== FALSE POSITIVES (Pozytywne uznane za Negatywne) ===
+
+[FP #1]
+Najbardziej przeceniona gra w jaką grałem.
+
+[FP #2]
+Nadal czekam aż gra będzie gotowa, to już prawie trzeci rok
+
+[FP #3]
+Gra na single player jest super i z******** fabuła, jednak wywala mnie z rdr online co 30 min i nie wiem dlaczego, próbowałem każdej metody, spędziłem godziny nad robieniem wszystkich polecanych rozwiązań i nic, a nawet gorzej, raz gra pociągnie 10 minut raz wywali po 30 sekundach, w logach systemowych ani śladu po awariach... Komnputer Ryzen 9 i rtx 4060 więc to nie problem sprzętowy, połączenie 6 mb/s pod obciążeniem więc to też nie problem internetu, sterowniki zaktualizowane, vulkan zmieniony na dx12, pliki tymczasowe zlikwidowane, uruchamianie jako administrator i wiele wiele innych, rock star jest poprostu do w********.
+
+po 200 h
+Gra prywatna jest super ale online jest dalej strasznie zaniedbane i mało zoptymalizowane :<
+
+
+
+[FP #4]
+bardzo dobra gra ale wiedźmin lepszy więc no
+
+[FP #5]
+Największy syf
+
+[FP #6]
+gdyby nie miala bugow byla by srednia a tak to jest spoko
+
+[FP #7]
+Jeszcze żebym mógł w nią zagrać to by było zaj****cie ale nie przecież taki *uj lepiej zj**ać coś w grze i niech dzbany czekają na patcha......
+
+[FP #8]
+Przypomina Netflixową interaktywną wersję wolno rozwijającego się westernu.
+
+[FP #9]
+Dla tej gry brakuje mi określenia : mam mieszane uczucia. 
+Grając w nią już przez blisko 40 godzin, dochodzę do wniosku, że słowo CHAOS jest tutaj na miejscu. Cała historia, otoczenie, bronie, umiejętności postacie, dosłownie wszystko kojarzy mi się z tym słowem. 
+Nie pamiętam czy taki zamiar mieli twórcy tej gry, ale wg mnie przesadzili. 
+
+Grafika czy muzyka stoją na bardzo wysokim poziomie, jest na co popatrzeć, jest czego posłuchać. Wyobrażenie przyszłości autorom wyszło. 
+
+Jednak, to co grywalne dla mnie trochę jednak leży. 
+Rozwój postaci jest przesadzony. Wszczepy, Hacki, Bronie, umiejętności, Atrybuty .... dosłownie niczym bohater czasami, człowiek się ugina pod tym. Żeby coś dobrać pod kątem swojego sposobu gry trzeba bardzo mocno się zagłębić. 
+Dodatkowo nie ma fajnego podsumowania graficznego zmian jakie wprowadzamy w swojej postaci. Załóżmy dodaje jakieś ulepszenie, to chciałbym od razu zobaczyć efekt obok w statystykach. 
+Drzewko umiejętności taki sam efekt....
+Bronie ciuchy(?!?!) ulepszenia, 5 poziomów ...
+Ogólnie za dużo trzeba czytać, a to nuży. 
+
+Model jazdy również pozostawia wiele do życzenia. Nie opłaca się brać zbyt szybkich samochodów, bo nad tym panować się nie da. Na dodatek zamiast zwyczajnie się zderzyć się z jakimś samochodem, uszkodzić nasz pojazd, to czesto wylatujemy w powietrze, co szczególnie jest irytujące w wyścigach. 
+
+Misji, kontraktów masa, cały scenariusz jest bardzo dobry, jest w co pograć.
+Ale te kontrakty są takie na jedno kopyto. Zabij wszystkich, podłóż, zdobądź, zabij kogoś na końcu. Czegoś mi tu brakuje. 
+
+No i ubrania, po co mi one ??? żadna cutscenka nie pokazuje naszej postaci w pełnej krasie. Co najwyżej możemy ją zobaczyć siedząc na motocyklu. Dodatek, taki bez sensu. 
+
+Jeśli miałbym polecić tą grę, to osobom, które lubią, zaawansowany rozwój postaci i lubią grzebać w setupach. Jeśli nastawiasz się na grę a'la GTA, gdzie rozgrywka jest najważniejsza to się zmęczysz. 
+
+
+EDIT : Przepraszam, ale zwracam honor autorom co do modelu jazdy, jest jak najbardziej w porządku, aczkolwiek podskakiwanie w momencie uderzenia nadal wkurza. 
+
+
+
+ 
+
+
+[FP #10]
+Pierwszy zakup ( ponad 2 lata po premierze )
+
+Jako fan RPG nie polecam tej gry.
+Kupiłem w promocji za 99 zł , ale gra warta może 9 zł ?
+
+Dużo już powiedziano na temat błędów... pierwsze 3 uruchomienia to " cyberpunk wypłaszczył się " , w trakcie gry również wywala do pulpitu.
+Gra pełna błędów ( znikające postacie , niedopasowane sceny , dźwięk dociera z innego miejsca niż powinien)
+
+To była kwestia techniczna.
+
+A sama gra  jest nijaka - interfejs i cała reszta wygląda koszmarnie, fabuła z masą scenek których nie da się przewinąć... nie zachęca do grania.
+
+Podsumowując jest to najbardziej spierd%$#ona gra w jaką grałem typu RPG .
+
+No ale ... przetestowałem osobiście dając tej grze szanse i licząc na to że 2 lata to dość czasu na naprawę błędów.
+W tej grze jest duży plus!!! - MOŻNA WYBRAĆ OPCJE WYJŚCIA Z GRY!   - DLATEGO DLA TEJ OPCJI POLECAM :)
+
+[FP #11]
+Fabularne zero gdzie gra się postacią z zaburzeniami psychicznymi.
+Nie kupuję tej historyjki o tym że Dutch wychował Artura. Po drugim rozdziale każda normalna osoba opuściła by bandę lub będąc w tak zdemoralizowanej grupie to zwyczajnie ktoś by tego Dutcha odpalił. Niestety tak się nie dzieje i ciągle robimy to samo przez co gra od 3 rozdziału staje się męcząca, a peak osiąga na Karaibach. Co więcej sama banda jest odpychająca. Postacie które tam są powodują że jedyne co chcesz robić to przestać robić misje głównego wątku.
+To samo z tymi aktywnościami pobocznymi i polowaniami - co z tego że fajne, jak efekt jest taki że ulepszasz obóz którego nienawidzisz.
+Już pomijam to że gra ma abstrakcyjne tempo i ciągle walczy się z hordami wrogów (Artur zabija chyba ponad 1050 osób przez grę xD) mimo że ma jakieś pseudo hardcorowe mechaniki które się ze sobą gryzą. (dla mnie ta gra to połączenie jakiegoś Dooma z Hunter call of the Wild)
+Jedynie epilog jest przyjemny - gra ma w końcu odpowiednie tempo i można chłonąć klimat - ale co z tego jeśli musisz przebić się przez wielką kupę pozbawioną fabularnego/logicznego sensu z rozgrywką a'la doom.
+
+I żeby nie było, to nie jest zła gra - ma swoje momenty, ale dla mnie połączenie bardziej hardcorowych mechanik z maksymalną casualizacją (to akurat jeszcze jest do przeżycia) + fabuła która nie ma sensu (to jest nieakceptowalne) powoduje że nie wiem czy kiedykolwiek znowu w nią zagram.
+
+Mam nadzieję że RDR3 jak kiedykolwiek wyjdzie to będzie to całkowicie nowa historia, bo zabieg z tym że RDR2 jest prologiem jest moim zdaniem bardzo słaby i psuje cały odbiór świetnej jedyneczki.
+
+Podsumowując:
+RDR2 -> najbardziej zmarnowany potencjał i największy zawód growy ever. Momentami niezła wręcz wybitna, klimatycznie bardzo dobra, fabularne zero, rozgrywka średnia.
+
+[FP #12]
+CRUSH ZA CRUSHEM GRA MA 3 LATA BUG ZA BUGIEM REDZI?
+Nagrodę z misji nie mogę odebrać bo auto się nie respi. 
+Firma zarabia miliony a daje graczom gówno na talerzu no sry.
+Drugie podejście myślałem ze "będzie fajnie poprawili to i to" xD Nic nie poprawili
+Grę przejdę ale ogólnie to jestem załamany crushami średnio co 1-2 godziny
+Odechciewa się gdy robisz sobie misję a tu "Cyberpunk 2077 wypłaszczył się"
+
+[FP #13]
+gra spoko tylko ma więcej bugów niż ja nieobecności w szkole
+
+[FP #14]
+Nudy. Fabuła jest typu odyseja w poszukiwaniu córki, mechanika to spamowanie op technik. Grafika fajna, dobre d u p y, gra długa i nudna.
+
+[FP #15]
+Fajna gra ale w mojej opinii nie warta 270 złotych
+
+=== FALSE NEGATIVES (Negatywne uznane za Pozytywne) ===
+
+[FN #1]
+Dla tej gry kupiłem  PS4 i dla Wiedźmina 4 kupię PS5
+
+[FN #2]
+Pomimo wielu błędów i kiepskiej optymalizacji ukończyłem grę z uśmiechem na twarzy.
+Po updatcie 1.61 wiele błędów zostało poprawionych a optymalizacja gry jest na poprawnym poziomie (działanie gry jest stabilniejsze dzięki skalowaniu rozdzielczości przez co można zyskac 10-15 fpsów więcej kosztem gorszej grafiki ale coś za coś). Dla samej historii, klimatu miasta i mocnej poprawie działania gry warto dac jej szanse.
+
+[FN #3]
+Jedna z najlepszych jak nie najlepsza gra fabularna w jaką grałem
+
+[FN #4]
+Moge zagrać w reverse sex z Mamą mojego kolegi wiadomo jakiego
+
+[FN #5]
+Jestem na wstępie ale jest to tak z******** że hoho
+
+
+[FN #6]
+Polecam :), dla fanów D&D i nie tylko.
+
+[FN #7]
+Grafika 8/10
+Fabuła 10/10
+Poziom trudnosci 3/10
+Na optymalizacja nie narzekam, praktycznie non stop 180+ fps przy max ustawieniach przy 4k bezproblemowe 60+fps
+Nic mniej nic wiecej
+
+[FN #8]
+Nie przewijaj dialogów a będzie ci dane, Rd2 oddaje 👁️
+
+[FN #9]
+mapa jest bardzo dobra zrobiona i watek Słowian jest dobrze wykonany
+
+
+[FN #10]
+Gicik w c***
+
+[FN #11]
+jeśli by sie sam nie odinstalowywała to polecam
+
+[FN #12]
+Sex z diablicą
+
+[FN #13]
+To moje najlepiej wydane pieniądze na grę - no, zaraz obok Metro Exodus. Gra 11/10
+
+[FN #14]
+Jeżeli nie grałeś w wiedźmina i nie dałeś mu pozytywnej recenzji, nie nazywaj się patriotą.
+
+[FN #15]
+Podczas zapisywania gra się zawiesza i umiera. 
+Podczas grupowania drużyny gra się zawiesza i umiera. 
+Podczas eksploracji gra się zawiesza i umiera.
+Krótkie momenty kiedy działa są super, ale polecam poczekać jeszcze kilka miesięcy z zakupem, aż będzie faktycznie działać. Na tę chwilę jest frustrująca.
